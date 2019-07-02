@@ -303,4 +303,93 @@ namespace NodaMoney.Tests.MoneyFormattableSpec
             _dinar.ToString("I4").Should().Be("BHD 765.4320");
         }
     }
+    public class GivenIWantMoneyAsStringWithoutCurrencyCodeOrSymbol
+    {
+        private Money _yen = new Money(765.4321m, Currency.FromCode("JPY"));
+        private Money _euro = new Money(765.4321m, Currency.FromCode("EUR"));
+        private Money _dollar = new Money(765.4321m, Currency.FromCode("USD"));
+        private Money _dinar = new Money(765.4321m, Currency.FromCode("BHD"));
+
+        [Fact]
+        [UseCulture("en-US")]
+        public void WhenCurrentCulturUS_ThenDecimalsFollowsCurrencyAndAmountFollowsCurrentCultureNL()
+        {
+            _yen.ToString("F").Should().Be("765");
+            _euro.ToString("F").Should().Be("765.43");
+            _dollar.ToString("F").Should().Be("765.43");
+            _dinar.ToString("F").Should().Be("765.432");
+        }
+
+        [Fact]
+        [UseCulture("nl-NL")]
+        public void WhenCurrentCultureNL_ThenDecimalsFollowsCurrencyAndAmountFollowsCurrentCultureNL()
+        {
+            Thread.CurrentThread.CurrentCulture.Name.Should().Be("nl-NL");
+            _yen.ToString("F").Should().Be("765");
+            _euro.ToString("F").Should().Be("765,43");
+            _dollar.ToString("F").Should().Be("765,43");
+            _dinar.ToString("F").Should().Be("765,432");
+        }
+
+        [Fact]
+        [UseCulture("fr-FR")]
+        public void WhenCurrentCultureFR_ThenDecimalsFollowsCurrencyAndAmountFollowsCurrentCultureFR()
+        {
+            Thread.CurrentThread.CurrentCulture.Name.Should().Be("fr-FR");
+            _yen.ToString("F").Should().Be("765");
+            _euro.ToString("F").Should().Be("765,43");
+            _dollar.ToString("F").Should().Be("765,43");
+            _dinar.ToString("F").Should().Be("765,432");
+        }
+
+        [Fact]
+        [UseCulture("en-US")]
+        public void WhenZeroDecimals_ThenThisShouldSucceed()
+        {
+            _yen.ToString("F0").Should().Be("765");
+            _euro.ToString("F0").Should().Be("765");
+            _dollar.ToString("F0").Should().Be("765");
+            _dinar.ToString("F0").Should().Be("765");
+        }
+
+        [Fact]
+        [UseCulture("en-US")]
+        public void WhenOneDecimals_ThenThisShouldSucceed()
+        {
+            _yen.ToString("F1").Should().Be("765.0");
+            _euro.ToString("F1").Should().Be("765.4");
+            _dollar.ToString("F1").Should().Be("765.4");
+            _dinar.ToString("F1").Should().Be("765.4");
+        }
+
+        [Fact]
+        [UseCulture("en-US")]
+        public void WhenTwoDecimals_ThenThisShouldSucceed()
+        {
+            _yen.ToString("F2").Should().Be("765.00");
+            _euro.ToString("F2").Should().Be("765.43");
+            _dollar.ToString("F2").Should().Be("765.43");
+            _dinar.ToString("F2").Should().Be("765.43");
+        }
+
+        [Fact]
+        [UseCulture("en-US")]
+        public void WhenThreeDecimals_ThenThisShouldSucceed()
+        {
+            _yen.ToString("F3").Should().Be("765.000");
+            _euro.ToString("F3").Should().Be("765.430");
+            _dollar.ToString("F3").Should().Be("765.430");
+            _dinar.ToString("F3").Should().Be("765.432");
+        }
+
+        [Fact]
+        [UseCulture("en-US")]
+        public void WhenFourDecimals_ThenThisShouldSucceed()
+        {
+            _yen.ToString("F4").Should().Be("765.0000");
+            _euro.ToString("F4").Should().Be("765.4300");
+            _dollar.ToString("F4").Should().Be("765.4300");
+            _dinar.ToString("F4").Should().Be("765.4320");
+        }
+    }
 }

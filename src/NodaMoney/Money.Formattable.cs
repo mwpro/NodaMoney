@@ -59,6 +59,7 @@ namespace NodaMoney
             }
 
             numberFormatInfo.CurrencyDecimalDigits = (int)currency.DecimalDigits;
+            numberFormatInfo.NumberDecimalDigits = (int)currency.DecimalDigits;
             numberFormatInfo.CurrencySymbol = currency.Symbol;
 
             if (useCode)
